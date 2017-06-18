@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Sierpinski triangle</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="chaosgame.js"></script>
+    <link href = "choasgame.css" type = "text/css" rel = "stylesheet">
+    <script>
+
+
+    var game;
+    $(document).ready(function() {
+        var canvasWidth = $("#canvas-container").css("width");
+        var canvasHeight = $("#canvas-container").css("height");
+        canvasWidth = canvasWidth.substring(0, canvasWidth.indexOf("p"));
+        canvasHeight = canvasHeight.substring(0, canvasHeight.indexOf("p"));
+
+        var canvas = document.getElementById("canvas");
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        game = new Game();
+        addClickListeners();
+
+    });
+
+    var addClickListeners = function() {
+        $("canvas").click(function(event) {
+            game.clicked(event.offsetX, event.offsetY);
+        });
+    }
+    </script>
+</head>
+<body>
+
+    <div id = "settings-bar">
+        <h1>Settings</h1>
+        <br>
+        <button id = "start">Start</button>
+        <br>
+        <button id = "reset"> Reset </button>
+    </div>
+    <div id = "canvas-container">
+        <canvas id = "canvas"></canvas>
+    </div>
+
+</body>
+</html>
