@@ -22,27 +22,49 @@ function Game() {
 
     var drawPolygon = function(x, y, sideNum, width) {
 
-        var h = width/2;
+        console.log("Drawing a " + sideNum + " side polygon");
         var innerAngle = 180 - (360/sideNum);
+        console.log("Inner angle = ", innerAngle);
+        var array = [];
 
         if (sideNum % 2 == 0) {
-            var start = [x-h, y-(h/(Math.tan(innerAngle/2)))];
+            var radius = width/2;
+            for(var i = 1; i < sideNum + 1; i++) {
+                var coords = [];
+                coords.push(x - radius * Math.cos(2*Math.PI*(i/sideNum)));
+                coords.push(y - radius * Math.sin(2*Math.PI*(i/sideNum)));
+                array.push(coords);
+            }
         } else {
-            var start = [x, y - (1/((1+Math.sin(innerAngle/2)/(width*Math.sin(innerAngle/2)))))];
+            var apothem = (width*Math.abs(Math.sin(innerAngle/2))/(1+Math.abs(Math.sin(innerAngle/2))));
+            console.log("apothem = ", apothem);
+            var radius = width - apothem;
+            for(var i = 1; i < sideNum + 1; i++) {
+                var coords = [];
+                coords.push(x - radius * Math.sin(2*Math.PI*(i/sideNum)));
+                coords.push(y - radius * Math.cos(2*Math.PI*(i/sideNum)));
+                array.push(coords);
+            }
         }
+        console.log(array);
+        console.log("radius = ", radius);
+
 
         turtle.beginPath();
-        turtle.moveTo(start[0], start[1]);
-        for(var i = 0; i < sideNum; i++) {
-
+        turtle.moveTo(array[0][0], array[0][1]);
+        for(var i = 0; i < array.length; i++) {
+            turtle.lineTo(array[i][0],array[i][1]);
         }
+        turtle.lineTo(array[0][0], array[0][1]);
+        turtle.stroke();
     };
 
     this.clicked = function(clickX, clickY) {
         console.log(clickX);
         console.log(clickY);
         // turtle.beginPath();
-        drawSquare(clickX, clickY, 20);
+        var sideNum = Math.floor(Math.random() * 6) + 3;
+        drawPolygon(clickX, clickY, sideNum, 100);
     }
 
 }
